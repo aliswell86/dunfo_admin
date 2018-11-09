@@ -16,8 +16,8 @@
                 <textarea rows="10" cols="100" class="form-control" id="inCardNm" name="inCardNm" maxlength="999" style="resize:none"></textarea>
               </div>
             </div>
-            <button type="button" class="btn btn-primary" id="getApiItemInfo">DB저장</button>
-            <button type="button" class="btn btn-primary" id="getDbItemInfo">DB조회</button>
+            <button type="button" class="btn btn-primary" id="getApiItemInfo">API_ID조회</button>
+            <button type="button" class="btn btn-primary" id="getApiItemDtlInfo">APID_DTL조회</button>
           </form>
         </div>
         <div class="col-lg-8 mb-4">
@@ -29,7 +29,7 @@
   <script>
     jQuery(document).ready(function() {
       $("#getApiItemInfo").click(function() {card.getApiCardInfo();});
-      $("#getDbItemInfo").click(function() {card.getDbCardInfo();});
+      $("#getApiItemDtlInfo").click(function() {card.getApiItemDtlInfo();});
     });
   </script>
 </body>

@@ -24,7 +24,15 @@ var DunCardItem = mongoose.Schema({
         name:{type:String},
         value:{type:String}
       }],
-      upgrade:{type:Number}
+      upgrade:{type:Number},
+      reinforceSkill:[{
+        jobId:{type:String},
+        jobName:{type:String},
+        skills:[{
+          name:{type:String},
+          value:{type:Number}
+        }]
+      }]
     }]
   }
 });
