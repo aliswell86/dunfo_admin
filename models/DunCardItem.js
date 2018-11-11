@@ -2,6 +2,7 @@
 var mongoose = require("mongoose");
 
 var DunCardItem = mongoose.Schema({
+  itemSeq:{type:Number},
   itemId:{type:String},
   itemName:{type:String},
   itemRarity:{type:String},

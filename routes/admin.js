@@ -22,11 +22,11 @@ router.post("/gcitem", function(req, res) {
   cardItemIdList = [];
 
   for(var i=0;i<inItemNmAry.length;i++) {
-    setTimeout(getApiList,x,inItemNmAry[i]);
-    x+=150;
+    setTimeout(getApiList,x,inItemNmAry[i],i);
+    x+=200;
   }
 
-  setTimeout(getApiListProc,x+150,cardItemIdList,res);
+  setTimeout(getApiListProc,x+200,cardItemIdList,res);
 });
 
 router.post("/gcdtlitem", function(req, res) {
@@ -36,21 +36,22 @@ router.post("/gcdtlitem", function(req, res) {
   cardItemDtlList = [];
 
   for(var i=0;i<inItemIdAry.length;i++) {
-    setTimeout(getApiDtlList,x,inItemIdAry[i]);
-    x+=150;
+    setTimeout(getApiDtlList,x,inItemIdAry[i],i);
+    x+=200;
   }
 
-  setTimeout(getApiDtlListProc,x+150,cardItemDtlList,res);
+  setTimeout(getApiDtlListProc,x+200,cardItemDtlList,res);
 });
 
 router.post("/gcdbitem", function(req, res) {
   var inList = [];
-  inList.push({"cardInfo.slots":{"$elemMatch":{"slotName":"머리어"}}});
-  inList.push({"cardInfo.enchant":{"$elemMatch":{"status":{"$elemMatch":{"name":"마법 크리티컬 히트"}}}}});
+  // inList.push({"cardInfo.slots":{"$elemMatch":{"slotName":"머리어깨"}}});
+  // inList.push({"cardInfo.enchant":{"$elemMatch":{"status":{"$elemMatch":{"name":"마법 크리티컬 히트"}}}}});
 
-  DunCardItem.find({$and:inList}).exec(
+  DunCardItem.find({}).exec(
     function(err, dbList){
       if(err) return res.json(err);
+      console.log(prettyjson.render(JSON.stringify(dbList).toString()));
       res.json(dbList);
     }
   );
@@ -58,11 +59,12 @@ router.post("/gcdbitem", function(req, res) {
 
 module.exports = router;
 
-var getApiList = function(inItemNm) {
+var getApiList = function(inItemNm,num) {
   var result = "";
   var options = {
     url:"https://api.neople.co.kr/df/items?apikey=vZmjeyzzdCx4opNjt4gus3jVE8uTC6Dq&itemName="+qs.escape(inItemNm)
   };
+  console.log(num + "\t" + inItemNm + "\t" + options.url);
 
   request(options, function(err,res,html) {
     result = html;
@@ -70,8 +72,8 @@ var getApiList = function(inItemNm) {
     var resultItem = JSON.parse(result).rows;
     for(var i=0;i<resultItem.length;i++) {
       // cardItemIdList.push(resultItem[i].itemId);
-      cardItemIdList.push(resultItem[i]);
-      console.log(console_num + " : " + inItemNm + "\n" + options.url + "\n" + resultItem[i].itemId);
+      cardItemIdList.push({"num":num,"inItemNm":inItemNm,"value":resultItem[i]});
+      // console.log(console_num + " : " + inItemNm + "\n" + options.url + "\n" + resultItem[i].itemId);
       console_num ++;
     }
   });
@@ -81,27 +83,23 @@ var getApiListProc = function(cardItemIdList,res) {
   res.json(cardItemIdList);
 };
 
-var getApiDtlList = function(id) {
+var getApiDtlList = function(id,num) {
   var result = "";
   var options = {
     url:"https://api.neople.co.kr/df/items/"+id+"?apikey=vZmjeyzzdCx4opNjt4gus3jVE8uTC6Dq"
   };
-
+  console.log(num + "\t" + id + "\t" + options.url);
   request(options, function(err,res,html) {
     result = html;
   }).on('complete', function() {
-    console.log(prettyjson.render(JSON.parse(result)));
-    cardItemDtlList.push(JSON.parse(result));
+    // console.log(prettyjson.render(JSON.parse(result)));
+    var result_obj = JSON.parse(result);
+    result_obj.itemSeq = num;
+    cardItemDtlList.push(result_obj);
   });
 };
 
 var getApiDtlListProc = function(cardItemDtlList,res) {
-  // 5개밖에 안들어감 여기부터 ㅠㅠ
-  DunCardItem.create(cardItemDtlList);
-  res.json(cardItemDtlList);
-};
-
-var setMydbApiListDtl = function(res) {
   DunCardItem.create(cardItemDtlList);
   res.json([]);
 };

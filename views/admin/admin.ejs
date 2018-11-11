@@ -8,16 +8,17 @@
   <div class="container">
     <p>
       <div class="row">
-        <div class="col-lg-4 mb-4">
+        <div class="col-lg-12 mb-4">
           <form name="cardSetForm" id="cardSetForm">
             <div class="control-group form-group">
               <div class="controls">
                 <label>입력</label>
-                <textarea rows="10" cols="100" class="form-control" id="inCardNm" name="inCardNm" maxlength="999" style="resize:none"></textarea>
+                <textarea rows="10" cols="400" class="form-control" id="inCardNm" name="inCardNm" maxlength="20000" style="resize:none"></textarea>
               </div>
             </div>
             <button type="button" class="btn btn-primary" id="getApiItemInfo">API_ID조회</button>
             <button type="button" class="btn btn-primary" id="getApiItemDtlInfo">APID_DTL조회</button>
+            <button type="button" class="btn btn-primary" id="getDBItemDtlInfo">DB조회</button>
           </form>
         </div>
         <div class="col-lg-8 mb-4">
@@ -30,6 +31,7 @@
     jQuery(document).ready(function() {
       $("#getApiItemInfo").click(function() {card.getApiCardInfo();});
       $("#getApiItemDtlInfo").click(function() {card.getApiItemDtlInfo();});
+      $("#getDBItemDtlInfo").click(function() {card.getDBItemDtlInfo();});
     });
   </script>
 </body>
