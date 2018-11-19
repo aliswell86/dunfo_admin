@@ -5,7 +5,7 @@ card = function() {
 
     var html = "";
     $.each(data, function(i, obj) {
-      html += obj.num + "\t" + obj.value.itemId + "\t"+ obj.inItemNm + "\n";
+      html += obj.value.itemId + "\t"+ obj.value.itemName + "\t" + obj.num + "\n";
     });
     //console.log(html);
     $("#inCardNm").val(html);

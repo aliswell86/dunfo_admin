@@ -15,6 +15,7 @@ var DunCardItem = mongoose.Schema({
   itemFlavorText:{type:String},
   setItemId:{type:String},
   setItemName:{type:String},
+  searchItemName:{type:String},
   cardInfo:{
     slots:[{
       slotId:{type:String},

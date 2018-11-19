@@ -3,6 +3,7 @@ var express = require("express");
 var request = require("request");
 var qs = require("querystring");
 var prettyjson = require('prettyjson');
+var voca = require('voca');
 var DunCardItem = require("../models/DunCardItem.js");
 var router = express.Router();
 var header_txt = "관리자 - 던포";
@@ -62,7 +63,7 @@ module.exports = router;
 var getApiList = function(inItemNm,num) {
   var result = "";
   var options = {
-    url:"https://api.neople.co.kr/df/items?apikey=vZmjeyzzdCx4opNjt4gus3jVE8uTC6Dq&itemName="+qs.escape(inItemNm)
+    url:"https://api.neople.co.kr/df/items?apikey=vZmjeyzzdCx4opNjt4gus3jVE8uTC6Dq&itemName="+qs.escape(inItemNm)+"&wordType=front"
   };
   console.log(num + "\t" + inItemNm + "\t" + options.url);
 
@@ -95,6 +96,7 @@ var getApiDtlList = function(id,num) {
     // console.log(prettyjson.render(JSON.parse(result)));
     var result_obj = JSON.parse(result);
     result_obj.itemSeq = num;
+    result_obj.searchItemName = voca.camelCase(result_obj.itemName);
     cardItemDtlList.push(result_obj);
   });
 };
